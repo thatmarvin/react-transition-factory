@@ -17,18 +17,15 @@ import KatPersona from './components/KatPersona';
 import WarningMessage from './components/WarningMessage';
 
 import './index.css';
-import choreography from '../src/factory/choreography';
+import transitionFactory from '../src/factory/transitionFactory';
 import { opacity, translate, rotate, scale } from '../src/presets/index';
 
-const BatmanWipeTransition = choreography([opacity, rotate, scale.all]);
+const BatmanWipeTransition = transitionFactory([opacity, rotate, scale.all]);
 
 storiesOf('Standard Transitions', module)
   .addDecorator(TransitionGroupDecorator)
   .add('Fade', () => (
-    <FadeTransition
-      onEnter={(...args) => console.log(args)}
-      transitionId="fade-transition"
-    >
+    <FadeTransition>
       <KatPersona />
     </FadeTransition>
   ))

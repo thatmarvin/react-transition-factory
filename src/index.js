@@ -1,4 +1,4 @@
-import choreography from './factory/choreography';
+import transitionFactory from './factory/transitionFactory';
 import components from './components';
 import presets from './presets';
 

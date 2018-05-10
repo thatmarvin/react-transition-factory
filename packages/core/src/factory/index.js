@@ -79,7 +79,8 @@ const transitionFactory = (...args: Array<any>) => {
       timeout: number,
       delay: number,
       easing: string,
-      start: ArrayOrValue
+      start: ArrayOrValue,
+      state: string,
     ): Object => {
       return {
         transition: this.getTransitionProperty(timeout, delay, easing),
@@ -90,7 +91,7 @@ const transitionFactory = (...args: Array<any>) => {
           style[transitionName] = getStyleString(
             transitionName,
             style[transitionName],
-            transition.getStartStyle(startVal)
+            transition.getStartStyle(startVal, state),
           );
           return style;
         }, {}),
@@ -99,7 +100,8 @@ const transitionFactory = (...args: Array<any>) => {
 
     getTransitionStates = (
       start: ArrayOrValue,
-      end: ArrayOrValue
+      end: ArrayOrValue,
+      state: string,
     ): TransitionStates => {
       return transitions.reduce(
         (styles, transition, index) => {
@@ -110,22 +112,22 @@ const transitionFactory = (...args: Array<any>) => {
           styles.exited[transitionName] = getStyleString(
             transitionName,
             styles.exited[transitionName],
-            transition.getStartStyle(startVal)
+            transition.getStartStyle(startVal, state)
           );
           styles.entering[transitionName] = getStyleString(
             transitionName,
             styles.entering[transitionName],
-            transition.getEndStyle(endVal)
+            transition.getEndStyle(endVal, state)
           );
           styles.entered[transitionName] = getStyleString(
             transitionName,
             styles.entered[transitionName],
-            transition.getEndStyle(endVal)
+            transition.getEndStyle(endVal, state)
           );
           styles.exiting[transitionName] = getStyleString(
             transitionName,
             styles.exiting[transitionName],
-            transition.getStartStyle(startVal)
+            transition.getStartStyle(startVal, state)
           );
 
           return styles;
@@ -150,8 +152,8 @@ const transitionFactory = (...args: Array<any>) => {
         staticStyle: Object
       ): Object => {
         return {
-          ...this.getDefaultStyle(timeout, delay, easing, start),
-          ...this.getTransitionStates(start, end)[state],
+          ...this.getDefaultStyle(timeout, delay, easing, start, state),
+          ...this.getTransitionStates(start, end, state)[state],
           ...(staticStyle || {}),
         };
       }
